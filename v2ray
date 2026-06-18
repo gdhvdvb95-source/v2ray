@@ -1,0 +1,30 @@
+
+{
+  "inbounds": [{
+    "port": 4444,
+    "protocol": "vmess",
+    "settings": {
+      "clients": [{
+        "id": "11111111-2222-3333-4444-555555555555",
+        "alterId": 0
+      }]
+    },
+    "streamSettings": {
+      "network": "ws",
+      "wsSettings": {
+        "path": "/v2ray"
+      }
+    }
+  }],
+  "outbounds": [{
+    "protocol": "freedom",
+    "settings": {}
+  }]
+}
+EOF
+
+# ၄။ Cloud Shell Background မှာ V2Ray ကို တိုက်ရိုက် စမောင်းခြင်း
+nohup /usr/local/bin/v2ray run -config /usr/local/etc/v2ray/config.json > /dev/null 2>&1 &
+
+echo -e "\n\n✅ V2Ray Local Direct Install ပြီးပါပြီဗျာ။ \n👉 Port 4444 ပွင့်၊ မပွင့် စစ်ဆေးချက်-"
+ss -tlnp | grep 4444
