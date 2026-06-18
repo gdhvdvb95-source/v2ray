@@ -1,4 +1,11 @@
+# ၁။ ပတ်သက်သမျှ Docker container တွေအကုန် အရင်ရှင်းထုတ်ပါ
+docker rm -f v2ray-server shadowsocks openvpn softether 2>/dev/null
 
+# ၂။ V2Ray တရားဝင် Linux Binary ကို Direct ဒေါင်းလုဒ်ဆွဲပြီး သွင်းခြင်း
+curl -L -s https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh | bash
+
+# ၃။ Configuration ဖိုင်ကို Port 4444 အဖြစ် တိုက်ရိုက်ဆောက်ခြင်း
+mkdir -p /usr/local/etc/v2ray && cat << 'EOF' > /usr/local/etc/v2ray/config.json
 {
   "inbounds": [{
     "port": 4444,
