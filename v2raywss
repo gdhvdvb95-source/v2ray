@@ -1,0 +1,28 @@
+mkdir -p /usr/local/etc/v2ray && cat << 'EOF' > /usr/local/etc/v2ray/config.json
+
+{
+  "inbounds": [{
+    "port": 4444,
+    "listen": "127.0.0.1",
+    "protocol": "vmess",
+    "settings": {
+      "clients": [{
+        "id": "11111111-2222-3333-4444-555555555555",
+        "alterId": 0
+      }]
+    },
+    "streamSettings": {
+      "network": "ws",
+      "wsSettings": {
+        "path": "/v2ray-ws"
+      }
+    }
+  }],
+  "outbounds": [{
+    "protocol": "freedom",
+    "settings": {}
+  }]
+}
+EOF
+# ၄။ Cloud Shell Background မှာ V2Ray ကို တိုက်ရိုက် စမောင်းခြင်း
+nohup /usr/local/bin/v2ray run -config /usr/local/etc/v2ray/config.json > /dev/null 2>&1 &
