@@ -10,7 +10,9 @@ mkdir -p /usr/local/etc/xray && cat << 'EOF' > /usr/local/etc/xray/config.json
     "port": 4444,
     "protocol": "vless",
     "settings": {
-      "clients": [{ "id": "11111111-2222-3333-4444-555555555555", "flow": "xtls-reality-vision" }],
+      "clients": [{ 
+        "id": "11111111-2222-3333-4444-555555555555"
+        }],
       "decryption": "none"
     },
     "streamSettings": {
@@ -26,6 +28,8 @@ mkdir -p /usr/local/etc/xray && cat << 'EOF' > /usr/local/etc/xray/config.json
     }
   }]
 }
+
+
 EOF
   
   #create public key and private key make with xray x25519 this command
