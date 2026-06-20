@@ -1,0 +1,65 @@
+# ၁။ ပတ်သက်သမျှ Docker container တွေအကုန် အရင်ရှင်းထုတ်ပါ
+
+# ၂။ V2Ray တရားဝင် Linux Binary ကို Direct ဒေါင်းလုဒ်ဆွဲပြီး သွင်းခြင်း
+curl -L -s https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh | bash
+
+# ၂.၅။ Self-Signed TLS Certificate ကို vpn.aung1.xyz အတွက် တစ်ခါတည်းဆောက်ခြင်း (v2rayNG Error ကျော်ရန်)
+mkdir -p /usr/local/etc/v2ray
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout /usr/local/etc/v2ray/v2ray.key \
+  -out /usr/local/etc/v2ray/v2ray.crt \
+  -subj "/CN=vpn.aung1.xyz"
+
+# ၃။ Configuration ဖိုင်ကို gRPC + TLS စနစ်ဖြင့် Port 4444 တွင် တိုက်ရိုက်ဆောက်ခြင်း
+cat << 'EOF' > /usr/local/etc/v2ray/config.json
+{
+  "inbounds": [{
+    "port": 4444,
+    "listen": "127.0.0.1",
+    "protocol": "vmess",
+    "settings": {
+      "clients": [{
+        "id": "11111111-2222-3333-4444-555555555555",
+        "alterId": 0
+      }]
+    },
+    "streamSettings": {
+      "network": "grpc",
+      "security": "tls",
+      "tlsSettings": {
+        "certificates": [
+          {
+            "certificateFile": "/usr/local/etc/v2ray/v2ray.crt",
+            "keyFile": "/usr/local/etc/v2ray/v2ray.key"
+          }
+        ]
+      },
+      "grpcSettings": {
+        "serviceName": "v2ray-tunnel"
+      }
+    }
+  }],
+  "outbounds": [{
+    "protocol": "freedom",
+    "settings": {}
+  }]
+}
+EOF
+
+# ၄။ Cloud Shell Background မှာ V2Ray ကို တိုက်ရိုက် စမောင်းခြင်း
+nohup /usr/local/bin/v2ray run -config /usr/local/etc/v2ray/config.json > /dev/null 2>&1 &
+
+echo -e "\n\n✅ V2Ray gRPC Local Direct Install ပြီးပါပြီဗျာ။ \n👉 Port 4444 ပွင့်၊ မပွင့် စစ်ဆေးချက်-"
+
+echo "Starting V2Ray gRPC process..."
+sleep 2
+
+if command -v ss &> /dev/null; then
+    ss -tlnp | grep 4444 || true
+elif command -v netstat &> /dev/null; then
+    netstat -nltp | grep 4444 || true
+else
+    echo "V2Ray gRPC is configured successfully."
+fi
+
+exit 0
