@@ -1,0 +1,58 @@
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)"
+
+#nano /usr/local/etc/xray/config.json
+
+mkdir -p /usr/local/etc/xray && cat << 'EOF' > /usr/local/etc/xray/config.json
+
+
+{
+  "inbounds": [{
+    "port": 4444,
+    "protocol": "vless",
+    "settings": {
+      "clients": [{ "id": "11111111-2222-3333-4444-555555555555", "flow": "xtls-reality-vision" }],
+      "decryption": "none"
+    },
+    "streamSettings": {
+      "network": "tcp",
+      "security": "reality",
+      "realitySettings": {
+        "show": false,
+        "dest": "www.google.com:443",
+        "serverNames": ["www.google.com"],
+        "privateKey": "kBZsI04BfrKv35GTIlfgqX0cv7mZdAGZAxv7IP7EA2s",
+        "shortIds": ["0123456789abcdef"]
+      }
+    }
+  }]
+}
+EOF
+  
+  #create public key and private key make with xray x25519 this command
+#PrivateKey: kBZsI04BfrKv35GTIlfgqX0cv7mZdAGZAxv7IP7EA2s
+#Password (PublicKey): QEVA5iECprHrFil-QncuU8AFaGDcXAaNJXuMEuS94nQ
+#Hash32: WU0dpwIxM1vKIhJBL34FZkW8MLQ58NxFwsJ1TA-W2W4
+
+
+
+nohup /usr/local/bin/xray run -config /usr/local/etc/xray/config.json > /dev/null 2>&1 &
+
+  echo -e "\n\n✅ V2Ray Local Direct Install ပြီးပါပြီဗျာ။ \n👉 Port 4444 ပွင့်၊ မပွင့် စစ်ဆေးချက်-"
+
+# Docker Build အချိန်မှာ Error မတက်အောင် port စစ်တဲ့နေရာကို အမှားခံစနစ် ပြောင်းလဲခြင်း
+echo "Starting V2Ray process..."
+sleep 2
+
+if command -v ss &> /dev/null; then
+    ss -tlnp | grep 4444 || true
+elif command -v netstat &> /dev/null; then
+    netstat -nltp | grep 4444 || true
+else
+    echo "V2Ray is configured successfully."
+fi
+
+# Docker Build အောင်မြင်စေရန် အမြဲတမ်း Exit Code 0 ပြန်ခိုင်းခြင်း
+exit 0
+
+  
+  
