@@ -1,3 +1,8 @@
+# ၁။ ပတ်သက်သမျှ Docker container တွေအကုန် အရင်ရှင်းထုတ်ပါ
+
+# ၂။ V2Ray တရားဝင် Linux Binary ကို Direct ဒေါင်းလုဒ်ဆွဲပြီး သွင်းခြင်း
+curl -L -s https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh | bash
+
 mkdir -p /usr/local/etc/v2ray && cat << 'EOF' > /usr/local/etc/v2ray/config.json
 
 {
